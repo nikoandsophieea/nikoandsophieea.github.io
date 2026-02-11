@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For Sophie 💖</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: radial-gradient(circle at top, #1b1b3a, #000);
+  color: white;
+  text-align: center;
+  overflow-x: hidden;
+}
+
+.hero {
+  padding: 80px 20px;
+}
+
+h1 {
+  font-size: 3rem;
+  color: #ff6fae;
+  text-shadow: 0 0 10px #ff4b8b;
+}
+
+.card {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 25px;
+  max-width: 700px;
+  margin: auto;
+  box-shadow: 0 0 20px rgba(255,0,120,0.3);
+}
+
+button {
+  padding: 12px 22px;
+  border: none;
+  border-radius: 30px;
+  background: #ff4b8b;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  transform: scale(1.08);
+  background: #ff79b0;
+}
+
+.game-box {
+  margin-top: 30px;
+  font-size: 18px;
+}
+
+.heart {
+  position: fixed;
+  font-size: 22px;
+  animation: float 6s linear infinite;
+}
+
+@keyframes float {
+  from { bottom: -10px; opacity: 1; }
+  to { bottom: 100vh; opacity: 0; }
+}
+
+.hidden {
+  display: none;
+  font-size: 20px;
+  margin-top: 20px;
+  color: #ffb3d9;
+}
+
+footer {
+  margin-top: 80px;
+  font-size: 14px;
+  opacity: 0.6;
+}
+
+#story {
+  white-space: pre-wrap;
+  font-size: 20px;
+  min-height: 60px;
+}
+</style>
+</head>
+
+<body>
+
+<img src="us.png" style="
+width:260px;
+border-radius:25px;
+border:4px solid #ff6fae;
+box-shadow:0 0 25px #ff4b8b;
+background:black;
+padding:5px;">
+
+<div>
+  <h2>Will you be my Valentine, Sophie? 💘</h2>
+  <button onclick="yesLove()">YES 💖</button>
+  <button id="noBtn" onmouseover="moveNo()">NO 💔</button>
+  <p id="valentineResult"></p>
+</div>
+
+<audio id="bgm" loop>
+  <source src="setinh.mp3" type="audio/mpeg">
+</audio>
+
+<div class="hero">
+  <h1>Happy Valentine’s Day, Sophie 💖</h1>
+
+<div>
+  <h2>📖 Our Love Story (Visual Novel Game) :D</h2>
+  <p id="story"></p>
+  <button id="storyA" onclick="choose(1)">...</button>
+  <button id="storyB" onclick="choose(2)">...</button>
+</div>
+
+  <div class="card">
+    <p>
+      Even though we’re far apart, you are always close to my heart.  
+      Every message from you makes my day brighter, and every thought of you makes me smile.  
+      This little website is my digital hug for you 💞
+    </p>
+
+    <button onclick="revealLove()">Click for a secret message 💌</button>
+    <p id="loveMessage" class="hidden"></p>
+
+    <div class="game-box">
+      <h3>💘 Love Quiz Game</h3>
+      <p id="question"></p>
+      <button id="btnA" onclick="answer('A')">Option A</button>
+<button id="btnB" onclick="answer('B')">Option B</button>
+      <p id="result"></p>
+    </div>
+  </div>
+</div>
+
+<footer>
+Made with love for Sophie ✨
+</footer>
+
+<script>
+// Floating hearts
+setInterval(() => {
+  const h = document.createElement("div");
+  h.className = "heart";
+  h.innerText = "❤️";
+  h.style.left = Math.random()*100 + "vw";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(), 6000);
+}, 250);
+
+// Secret love message
+function revealLove() {
+  const msg = document.getElementById("loveMessage");
+  msg.classList.remove("hidden");
+  msg.innerText = "Sophieeee, you are my favorite person in this universe. I love you more than words can express 💖";
+}
+
+// Cute Love Quiz
+const questions = [
+  {q:"What do I love more?", A:"Sophie 💖", B:"Chocolate 🍫", correct:"A"},
+  {q:"What makes me happiest?", A:"Talking to Sophie 💬", B:"Money 💰", correct:"A"},
+  {q:"Who is the cutest person ever?", 
+ A:"Sophie 😳", 
+ B:"Sophie (obviously) 🥺", 
+ correct:["A","B"]}
+];
+
+let current = 0;
+function showQuestion() {
+  document.getElementById("question").innerText =
+    "Q" + (current+1) + ": " + questions[current].q;
+
+  document.getElementById("btnA").innerText = questions[current].A;
+  document.getElementById("btnB").innerText = questions[current].B;
+}
+
+showQuestion();
+
+function answer(choice) {
+  const res = document.getElementById("result");
+  const correct = questions[current].correct;
+
+  // If correct is an array (multiple correct answers)
+  if (Array.isArray(correct) ? correct.includes(choice) : choice === correct) {
+    res.innerText = "Correct! You know my heart so well 💕";
+  } else {
+    res.innerText = "Wrong, but you're still my favorite person 💗";
+  }
+
+  current++;
+  if (current < questions.length) {
+    showQuestion();
+  } else {
+    document.getElementById("question").innerText =
+      "Game Over! You won my heart forever 💘";
+  }
+}
+
+document.addEventListener("click", function () {
+  const music = document.getElementById("bgm");
+  music.volume = 0.6;
+  music.play();
+});
+
+function moveNo() {
+  const btn = document.getElementById("noBtn");
+  btn.style.position = "absolute";
+  btn.style.left = Math.random()*80 + "vw";
+  btn.style.top = Math.random()*80 + "vh";
+}
+
+function yesLove() {
+  document.getElementById("valentineResult").innerText =
+    "Sophie is my Valentine foreverrrr 💞😘, i love you 3000 :3";
+
+}
+const story = [
+  { 
+    text: "You meet Sophie online. What do you say?",
+    A: "Hi Sophie, you’re really cute 😊",
+    B: "Hey.",
+    nextA:1, nextB:2 
+  },
+
+  // First impression
+  { 
+    text: "She smiles and starts chatting with you 💕",
+    A: "Ask about her hobbies",
+    B: "Flirt with her more 😏",
+    nextA:3, nextB:4 
+  },
+
+  { 
+    text: "She replies politely but seems unsure.",
+    A: "Be more friendly",
+    B: "Act cool and distant",
+    nextA:3, nextB:5 
+  },
+
+  // Bonding phase
+  { 
+    text: "You talk about music, anime, and life until midnight 🌙",
+    A: "Tell her you like talking to her",
+    B: "Just keep chatting normally",
+    nextA:6, nextB:7 
+  },
+
+  { 
+    text: "She blushes at your flirting and laughs 💞",
+    A: "Ask her on a virtual date",
+    B: "Say you're joking",
+    nextA:6, nextB:5 
+  },
+
+  // Slight fail route
+  { 
+    text: "She gets confused and the vibe becomes awkward...",
+    A: "Apologize and be sweet",
+    B: "Leave the chat 😅",
+    nextA:3, nextB:16 
+  },
+
+  // Date route
+  { 
+    text: "She agrees to a virtual date on video call 💻",
+    A: "Dress up nicely",
+    B: "Stay casual in pajamas",
+    nextA:8, nextB:9 
+  },
+
+  { 
+    text: "You become close friends over many late-night chats.",
+    A: "Confess your feelings",
+    B: "Keep it slow",
+    nextA:10, nextB:11 
+  },
+
+  // Date outcomes
+  { 
+    text: "She notices your effort and smiles warmly 💗",
+    A: "Hold hands on screen (cringe but cute)",
+    B: "Compliment her smile",
+    nextA:10, nextB:10 
+  },
+
+  { 
+    text: "She laughs at your pajamas but finds it adorable 😂",
+    A: "Joke with her",
+    B: "Get embarrassed",
+    nextA:10, nextB:11 
+  },
+
+  // Confession
+  { 
+    text: "You confess. She goes silent for a moment...",
+    A: "Wait patiently",
+    B: "Say it's okay if she doesn't feel the same",
+    nextA:12, nextB:13 
+  },
+
+  { 
+    text: "You continue as close friends, but feelings grow slowly.",
+    A: "Confess later",
+    B: "Stay friends forever",
+    nextA:10, nextB:17 
+  },
+
+  // Good reaction
+  { 
+    text: "She smiles and says: 'I like you too.' 💍",
+    A: "Ask her to be your girlfriend",
+    B: "Stay calm and smile",
+    nextA:14, nextB:14 
+  },
+
+  { 
+    text: "She says she needs time but appreciates you.",
+    A: "Respect her decision",
+    B: "Push her for an answer",
+    nextA:11, nextB:16 
+  },
+
+  // True relationship
+  { 
+    text: "Months later, you meet her in real life. It's magical ✨",
+    A: "Propose secretly 💍",
+    B: "Enjoy the moment without pressure",
+    nextA:15, nextB:18 
+  },
+
+  // SECRET MARRIAGE ENDING
+  { 
+    text: "She says YES. You secretly get married in a small chapel 💖",
+    A: "Restart story 🔁",
+    B: "Restart story 🔁",
+    nextA:0, nextB:0 
+  },
+
+  // BAD ENDING
+  { 
+    text: "Bad ending… Sophie ghosted you 😭 Restart?",
+    A: "Try again",
+    B: "Try again",
+    nextA:0, nextB:0 
+  },
+
+  // Friend ending
+  { 
+    text: "You remain best friends forever, but nothing more.",
+    A: "Restart",
+    B: "Restart",
+    nextA:0, nextB:0 
+  },
+
+  // Normal good ending
+  { 
+    text: "You two stay together happily without marriage 💞",
+    A: "Restart",
+    B: "Restart",
+    nextA:0, nextB:0 
+  }
+];
+
+let s = 0;
+let typing = false;
+
+async function typeText(element, text) {
+  typing = true;
+  element.textContent = "";
+
+  for (let i = 0; i < text.length; i++) {
+    element.textContent += text[i];
+    await new Promise(r => setTimeout(r, 30));
+  }
+
+  typing = false;
+}
+
+async function showStory() {
+  if (typing) return;
+
+  const box = document.getElementById("story");
+  await typeText(box, story[s].text);
+
+  document.getElementById("storyA").innerText = story[s].A;
+  document.getElementById("storyB").innerText = story[s].B;
+}
+
+showStory();
+
+function choose(c){
+  if (typing) return;
+  s = (c==1)?story[s].nextA:story[s].nextB;
+  showStory();
+}
+
+</script>
+
+</body>
+
+</html>
